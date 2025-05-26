@@ -1,0 +1,8 @@
+{
+  "ProjectFolder": "",
+  "BinderToolPath": "D:/Tools/bindertool/BinderTool.exe",
+  "SoulsModelToolPath": "D:/Tools/AquaToolset/AquaToolset/net6.0-windows/SoulsModelTool.exe",
+  "MapTexturesDir": "D:\\Games\\Steam\\steamapps\\common\\DARK SOULS III\\Game\\map\\m32",
+  "GetFbxFile": true,
+  "UnpackTextures": false
+}
