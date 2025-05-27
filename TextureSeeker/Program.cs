@@ -22,7 +22,7 @@ namespace TextureSeeker {
 
             foreach (var dcxPath in args) {
                 var dcxDir = Path.GetDirectoryName(dcxPath);
-                var objectName = Path.GetFileNameWithoutExtension(dcxPath).TrimEnd(".mapbnd".ToCharArray());
+                var objectName = Path.GetFileNameWithoutExtension(dcxPath).TrimEnd(".objmapbnd".ToCharArray());
                 var objectDir = $"{userCfg.ProjectFolder}/{objectName}";
                 var allMaterialsDir = $"{objectDir}/materials";
 
@@ -34,27 +34,29 @@ namespace TextureSeeker {
 
                 //move fbx to project folder
                 if (userCfg.GetFbxFile) {
-                    var fbxPath = Directory.EnumerateFiles(dcxDir, $"{objectName}.fbx", SearchOption.AllDirectories).FirstOrDefault();
-                    File.Copy(fbxPath, Path.Combine(objectDir, Path.GetFileName(fbxPath)), true);
-                    File.Delete(fbxPath);
+                    var fbxPaths = Directory.EnumerateFiles(dcxDir, $"{objectName}*.fbx", SearchOption.AllDirectories);
+                    foreach (var fbxPath in fbxPaths) {
+                        File.Copy(fbxPath, Path.Combine(objectDir, Path.GetFileName(fbxPath)), true);
+                        File.Delete(fbxPath);
+                    }
                 }
 
                 //get textures paths
-                var matData = JsonSerializer.Deserialize<List<Material>>(
-                    File.ReadAllText(
-                        Directory.EnumerateFiles(dcxDir, $"{objectName}.flver.matData.json", SearchOption.AllDirectories)
-                        .FirstOrDefault())
-                    );
+                var matDataPaths = Directory.EnumerateFiles(dcxDir, $"{objectName}.flver.matData.json", SearchOption.AllDirectories);
 
-                foreach (var material in matData) {
-                    var materialDir = $"{allMaterialsDir}/{material.Name}";
-                    Directory.CreateDirectory(materialDir);
+                foreach (var matDataPath in matDataPaths) {
+                    var matData = JsonSerializer.Deserialize<List<Material>>(File.ReadAllText(matDataPath));
 
-                    //tpf to dds
-                    ConvertTextures(userCfg, material, materialDir);
+                    foreach (var material in matData) {
+                        var materialDir = $"{allMaterialsDir}/{material.Name}";
+                        Directory.CreateDirectory(materialDir);
 
-                    //game files to project folder
-                    MoveToProject(userCfg, material, materialDir);
+                        //tpf to dds
+                        ConvertTextures(userCfg, material, materialDir);
+
+                        //game files to project folder
+                        MoveToProject(userCfg, material, materialDir);
+                    }
                 }
             }
         }

@@ -1,8 +1,10 @@
 # TextureSeeker
 
-**TextureSeeker** is an app that extracts all textures associated with a `*.mapbnd.dcx` file.
+**TextureSeeker** is an Dark souls 3 tool that extracts all textures associated with a `*.mapbnd.dcx` and `*.objbnd.dcx` files.
 
 ## Requirements
+
+Before using you need to unpack game using [UXM](https://github.com/Nordgaren/UXM-Selective-Unpack)
 
 Edit `userConfig.json` and update the following paths to match where you have installed these tools:
 
@@ -25,13 +27,14 @@ In `userConfig.json`, configure the following:
 
 ```
 ProjectFolder
-├── *.fbx
-└── materials
-    ├── material_name
-    │   ├── texture.dds
-    │   ├── texture.dds
-    │   └── texture.dds
-    ├── another_material
-    │   ├── ...
-    │   └── ...
-    └── ...
+└──object_name
+    ├── *.fbx
+    └── materials
+        ├── material_name
+        │   ├── texture.dds
+        │   ├── texture.dds
+        │   └── texture.dds
+        ├── another_material
+        │   ├── ...
+        │   └── ...
+        └── ...
